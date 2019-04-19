@@ -4,9 +4,10 @@ import secrets
 from PIL import Image
 from flask import render_template, url_for, flash, redirect, request, abort
 from flowapp import app, db, bcrypt, mail
+from sqlalchemy import text, and_, func
 from flowapp.forms import (RegistrationForm, LoginForm, UpdateAccountForm,
-                           PostForm, RequestResetForm, ResetPasswordForm)
-from flowapp.models import User, Post, UserProfile, UserSession, Device, UserDevice, Categoria,DeviceConsumption
+                           PostForm, RequestResetForm, ResetPasswordForm, DateForm)
+from flowapp.models import User, Post, UserProfile, UserSession, Device, UserDevice, Categoria, DeviceConsumption
 from flask_login import login_user, current_user, logout_user, login_required
 from flask_mail import Message
 
@@ -148,14 +149,23 @@ def new_post():
                            form=form, legend='Nuevo Dispositivo')
 
 
-@app.route("/post/<int:post_id>")
+@app.route("/post/<int:post_id>", methods=['POST', 'GET'])
 def post(post_id):
-    
+    form = DateForm()
     # Se obtiene el device que ha seleccionado el usuario
     device = UserDevice.query.get_or_404(post_id)
-    #Obtener los consumos
-    listConsumos = DeviceConsumption.query.filter_by(idUserDevice=device.id)
-    return render_template('post.html', device=device, listConsumos=listConsumos)
+    listConsumos = None
+    if form.validate_on_submit():
+        # return form.dateInicio.data.strftime('%x')
+        print('Fecha Inicio***', form.dateInicio.data)
+        print('Fecha FIN***', form.dateFin.data)
+        listConsumos = db.session.query(DeviceConsumption).filter(and_((func.date(
+            DeviceConsumption.date) >= form.dateInicio.data), func.date(DeviceConsumption.date) <= form.dateFin.data))
+        # return redirect(url_for('post', post_id=device.id))
+    elif request.method == 'GET':
+        listConsumos = DeviceConsumption.query.filter_by(
+            idUserDevice=device.id)
+    return render_template('post.html', device=device, listConsumos=listConsumos, form=form)
 
 
 @app.route("/post/<int:post_id>/update", methods=['GET', 'POST'])

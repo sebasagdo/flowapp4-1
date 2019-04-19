@@ -1,11 +1,11 @@
 import sys
-from flask_wtf import FlaskForm
+from flask_wtf import FlaskForm, Form
 from flask_wtf.file import FileField, FileAllowed
 from flask_login import current_user
-from wtforms import StringField, PasswordField, SubmitField, BooleanField, TextAreaField, SelectField
+from wtforms import StringField, PasswordField, SubmitField, BooleanField, TextAreaField, SelectField, DateField
 from wtforms.validators import DataRequired, Length, Email, EqualTo, ValidationError
 from flowapp.models import User, UserProfile, Categoria
-
+from datetime import date
 
 class RegistrationForm(FlaskForm):
     username = StringField('Usuario',
@@ -92,3 +92,9 @@ class ResetPasswordForm(FlaskForm):
     confirm_password = PasswordField('Confirma contraseña',
                                      validators=[DataRequired(), EqualTo('password')])
     submit = SubmitField('Resetear Contraseña')
+
+
+class DateForm(FlaskForm):
+    dateInicio = DateField('Fecha Inicio', format="%m/%d/%Y")
+    dateFin = DateField('Fecha Inicio', format="%m/%d/%Y")
+    submit = SubmitField('Buscar')

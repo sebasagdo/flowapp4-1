@@ -36,18 +36,43 @@
                         <td>{{ consumo.date }}</td>
                       </tr>
                       {% endfor %}
-                      
                   </tbody>
               </table>
+
           </div>
           <div class="col-md-8 col-sm-12">
               <div id="canvas_container"></div>
           </div>
       </div>
-      
+  </div>
+
+  <div class="container">
+    <div class="row">
+        <div class="col-md-2 col-sm-14">
+            <link rel="stylesheet" href="//code.jquery.com/ui/1.11.4/themes/smoothness/jquery-ui.css">
+            <script src="//code.jquery.com/jquery-1.10.2.js"></script>
+            <script src="//code.jquery.com/ui/1.11.4/jquery-ui.js"></script>
+            <script>
+                $(function() {
+                  $( ".dtpick" ).datepicker();
+                });
+            </script>
+            <form method="POST" action="">
+                  {{ form.hidden_tag() }}
+                  {{ form.dateInicio.label(class="form-control-label") }}
+                  {{ form.dateInicio(class="dtpick") }}
+                  {{ form.dateFin.label(class="form-control-label") }}
+                  {{ form.dateFin(class="dtpick") }}
+                  <div class="form-group">
+                    {{ form.submit(class="btn btn-outline-info") }}
+                </div>
+          </form>
+        </div>
+    </div> 
   </div>
 
   
+
   <!-- Modal -->
   <div class="modal fade" id="deleteModal" tabindex="-1" role="dialog" aria-labelledby="deleteModalLabel" aria-hidden="true">
     <div class="modal-dialog" role="document">
@@ -67,4 +92,9 @@
       </div>
     </div>
   </div>
+
+
+
+  
 {% endblock content %}
+

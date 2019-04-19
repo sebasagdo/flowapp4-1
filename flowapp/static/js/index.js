@@ -7,7 +7,7 @@ var paper = new Raphael(document.getElementById('canvas_container'), 600, 525);
     var $this = $(aRows[i]);
     oData.devices[oData.devices.length] = {
       device: $this.find('td:nth-child(1)').text(),
-      ratio: $this.find('td:nth-child(5)').text().split(' ')[0]
+      ratio: $this.find('td:nth-child(2)').text().split(' ')[0]
     };
       console.log(i, oData.device, oData.ratio);
   }
