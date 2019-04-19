@@ -43,7 +43,7 @@ class UpdateAccountForm(FlaskForm):
                            validators=[DataRequired(), Length(min=2, max=20)])
     email = StringField('Email',
                         validators=[DataRequired(), Email()])
-    picture = FileField('Actualizar Foto PErfil', validators=[
+    picture = FileField('Actualizar Foto Perfil', validators=[
                         FileAllowed(['jpg', 'png'])])
     submit = SubmitField('Actualizar')
 
@@ -55,12 +55,12 @@ class UpdateAccountForm(FlaskForm):
                     'Ese usuario ya existe!. Cambie de usuario')
 
     def validate_email(self, email):
-        if email.data != current_user.email:
+        if email.data != current_user.profile.email:
             user = UserProfile.query.filter_by(email=email.data).first()
 
-        if user:
-            raise ValidationError(
-                'El email ya se ha tomado. Por favor usar uno diferente.')
+            if user:
+                raise ValidationError(
+                    'El email ya se ha tomado. Por favor usar uno diferente.')
 
 
 class PostForm(FlaskForm):
@@ -69,8 +69,8 @@ class PostForm(FlaskForm):
 
     category = SelectField('Categoria', coerce=int, choices=[(
         cate.id, cate.title) for cate in Categoria.query.all()])
-    
-    submit = SubmitField('Agregar')
+
+    submit = SubmitField('Enviar')
 
 
 class RequestResetForm(FlaskForm):
@@ -79,8 +79,10 @@ class RequestResetForm(FlaskForm):
     submit = SubmitField('Solicitar resetear contraseña')
 
     def validate_email(self, email):
-        user = User.query.filter_by(email=email.data).first()
-        if user is None:
+
+        #
+        userProfile = UserProfile.query.filter_by(email=email.data).first()
+        if userProfile is None:
             raise ValidationError(
                 'No hay ninguna cuenta asociada con ese email!.')
 

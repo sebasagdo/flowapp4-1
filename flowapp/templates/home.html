@@ -2,7 +2,7 @@
 {% block content %}
     {% for device in devices.items %}
         <article class="media content-section">
-          <img class="rounded-circle article-img" src="{{ url_for('static', filename='profile_pics/' + device.dispositivo.profile[0].image_file) }}">
+          <img class="rounded-circle article-img" src="{{ url_for('static', filename='profile_pics/' + device.dispositivo.profile.image_file) }}">
           <div class="media-body">
             <div class="article-metadata">
               <a class="mr-2" href="{{ url_for('user_posts', username=device.dispositivo.username) }}">{{ device.dispositivo.username }}</a>

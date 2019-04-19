@@ -20,7 +20,7 @@ class User(db.Model, UserMixin):
     password = db.Column('password', db.String(100))
     active = db.Column('Active', db.String(100), default='S')
     rol = db.Column('IdRole', db.Integer, default='111')
-    profile = db.relationship('UserProfile', backref='usuario')
+    profile = db.relationship('UserProfile', backref='usuario', uselist=False)
     posts = db.relationship('Post', backref='author', lazy=True)
     deviceUsuario = db.relationship('UserDevice', backref='dispositivo')
 
@@ -52,7 +52,7 @@ class UserProfile(db.Model):
     email = db.Column('Email', db.String(100))
     phone = db.Column('Phone', db.Integer)
     image_file = db.Column(db.String(20), nullable=False,
-                           default='default.jpg')
+                           default='default2.jpg')
 
     def __repr__(self):
         return f"UserProfile('{self.firstName}','{self.lastName}','{self.email}')"
@@ -81,6 +81,7 @@ class Categoria(db.Model):
     id = db.Column('IdDeviceCategory', db.Integer, primary_key=True)
     title = db.Column('Description', db.String(100), nullable=False)
     deviceCategoria = db.relationship('UserDevice', backref='dispCategoria')
+
     def __repr__(self):
         return "<Categoria(id='%s', name='%s')>" % (self.id, self.title)
 
@@ -108,6 +109,24 @@ class UserDevice(db.Model):
     idDeviceCategoryFK = db.Column('IdDeviceCategory', db.Integer, db.ForeignKey(
         'devicecategory.IdDeviceCategory'))
     zona = db.Column('Zone', db.String(100))
+    consumosDispositivo = db.relationship('DeviceConsumption', backref='userDevice')
+
+
+class Unit(db.Model):
+    __tablename__ = 'unit'
+    id = db.Column('IdUnit', db.Integer, primary_key=True)
+    name = db.Column('Name', db.String(45))
+    deviceConsumptionChild = db.relationship('DeviceConsumption', backref='unit')
+
+class DeviceConsumption(db.Model):
+    __tablename__ = 'deviceconsumption'
+
+    id = db.Column('IdConsumption', db.Integer, primary_key=True)
+    date = db.Column('Date', db.DateTime, nullable=False,
+                     default=datetime.utcnow)
+    quantity = db.Column('Quantity', db.Float)
+    idUnitFk = db.Column('IdUnit', db.Integer, db.ForeignKey('unit.IdUnit'))
+    idUserDevice = db.Column('IdUserDevice', db.Integer, db.ForeignKey('userdevice.IdUserDevice'))
 
 # Objeto DTO que representa el objeto de sesion
 
