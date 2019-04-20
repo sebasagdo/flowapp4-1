@@ -1,100 +1,114 @@
 {% extends "layout.html" %}
 {% block content %}
-  <article class="media content-section">
-    <img class="rounded-circle article-img" src="{{ url_for('static', filename='profile_pics/' + device.dispositivo.profile.image_file) }}">
-    <div class="media-body">
-      <div class="article-metadata">
-        <a class="mr-2" href="{{ url_for('user_posts', username=device.dispositivo.username) }}">{{ device.dispositivo.username }}</a>
-        <small class="text-muted">{{ device.linkDate.strftime('%Y-%m-%d') }}</small>
-        {% if device.dispositivo.id == current_user.id %}
-          <div>
-            <a class="btn btn-secondary btn-sm mt-1 mb-1" href="{{ url_for('update_post', post_id=device.id) }}">Actualizar</a>
-            <button type="button" class="btn btn-danger btn-sm m-1" data-toggle="modal" data-target="#deleteModal">Desasociar</button>
-          </div>
-        {% endif %}
+<article class="media content-section">
+  <img class="rounded-circle article-img"
+    src="{{ url_for('static', filename='profile_pics/' + device.dispositivo.profile.image_file) }}">
+  <div class="media-body">
+    <div class="article-metadata">
+      <a class="mr-2"
+        href="{{ url_for('usuarios.user_posts', username=device.dispositivo.username) }}">{{ device.dispositivo.username }}</a>
+      <small class="text-muted">{{ device.linkDate.strftime('%Y-%m-%d') }}</small>
+      {% if device.dispositivo.id == current_user.id %}
+      <div>
+        <a class="btn btn-secondary btn-sm mt-1 mb-1"
+          href="{{ url_for('dispositivos.update_post', post_id=device.id) }}">Actualizar</a>
+        <button type="button" class="btn btn-danger btn-sm m-1" data-toggle="modal"
+          data-target="#deleteModal">Desasociar</button>
       </div>
-      <h2 class="article-title"> Serial: {{ device.dispUser.serialID }}</h2>
-      <p class="article-content"><b>Zona:</b> {{ device.zona }}</p>
-      <p class="article-content"><b>Categoria:</b> {{ device.dispCategoria.title }}</p>
-      <p class="article-content"><b>Estadisticas:</b></p>
+      {% endif %}
     </div>
-    
-  </article>
-  <h2 class="article-title"> Tu historial:</h2>
-  <div class="container">
-      <div class="row">
-          <div class="col-md-5 col-sm-12">
-              <table border="1" id="html5logo" class="table table-striped">
-                  <tbody>
-                      <tr>
-                          <th>Consumo en CC</th>
-                          <th>Ultima Actualización</th>
-                      </tr>
-                      {% for consumo in listConsumos %}
-                      <tr>
-                        <td>{{ consumo.quantity }}</td>
-                        <td>{{ consumo.date }}</td>
-                      </tr>
-                      {% endfor %}
-                  </tbody>
-              </table>
-
-          </div>
-          <div class="col-md-8 col-sm-12">
-              <div id="canvas_container"></div>
-          </div>
-      </div>
+    <h2 class="article-title"> Serial: {{ device.dispUser.serialID }}</h2>
+    <p class="article-content"><b>Zona:</b> {{ device.zona }}</p>
+    <p class="article-content"><b>Categoria:</b> {{ device.dispCategoria.title }}</p>
+    <p class="article-content"><b>Estadisticas:</b></p>
   </div>
 
-  <div class="container">
-    <div class="row">
-        <div class="col-md-2 col-sm-14">
-            <link rel="stylesheet" href="//code.jquery.com/ui/1.11.4/themes/smoothness/jquery-ui.css">
-            <script src="//code.jquery.com/jquery-1.10.2.js"></script>
-            <script src="//code.jquery.com/ui/1.11.4/jquery-ui.js"></script>
-            <script>
-                $(function() {
-                  $( ".dtpick" ).datepicker();
-                });
-            </script>
-            <form method="POST" action="">
-                  {{ form.hidden_tag() }}
-                  {{ form.dateInicio.label(class="form-control-label") }}
-                  {{ form.dateInicio(class="dtpick") }}
-                  {{ form.dateFin.label(class="form-control-label") }}
-                  {{ form.dateFin(class="dtpick") }}
-                  <div class="form-group">
-                    {{ form.submit(class="btn btn-outline-info") }}
-                </div>
-          </form>
-        </div>
-    </div> 
-  </div>
+</article>
+<h2 class="article-title"> Tu historial:</h2>
+<div class="container">
+  <div class="row">
+    <div class="col-md-5 col-sm-12">
+      <table border="1" id="html5logo" class="table table-striped">
+        <tbody>
+          <tr>
+            <th>Consumo en CC</th>
+            <th>Ultima Actualización</th>
+          </tr>
+          {% for consumo in listConsumos %}
+          <tr>
+            <td>{{ consumo.quantity }}</td>
+            <td>{{ consumo.date }}</td>
+          </tr>
+          {% endfor %}
+        </tbody>
+      </table>
 
-  
-
-  <!-- Modal -->
-  <div class="modal fade" id="deleteModal" tabindex="-1" role="dialog" aria-labelledby="deleteModalLabel" aria-hidden="true">
-    <div class="modal-dialog" role="document">
-      <div class="modal-content">
-        <div class="modal-header">
-          <h5 class="modal-title" id="deleteModalLabel">¿Está seguro de desasociar el dispositivo de su cuenta?</h5>
-          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-            <span aria-hidden="true">&times;</span>
-          </button>
-        </div>
-        <div class="modal-footer">
-          <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
-          <form action="{{ url_for('delete_post', post_id=device.id) }}" method="POST">
-            <input class="btn btn-danger" type="submit" value="Desasociar">
-          </form>
-        </div>
-      </div>
+    </div>
+    <div class="col-md-8 col-sm-12">
+      <div id="canvas_container"></div>
     </div>
   </div>
-
-
-
   
+</div>
+
+<div class="container">
+  <div class="row">
+    <div class="col-md-2 col-sm-14">
+      <link rel="stylesheet" href="//code.jquery.com/ui/1.11.4/themes/smoothness/jquery-ui.css">
+      <script src="//code.jquery.com/jquery-1.10.2.js"></script>
+      <script src="//code.jquery.com/ui/1.11.4/jquery-ui.js"></script>
+      <script>
+        $(function () {
+          $(".dtpick").datepicker();
+        });
+      </script>
+      <form method="POST" action="{{url_for('dispositivos.post',post_id=device.id)}}">
+        {{ form.hidden_tag() }}
+        {{ form.dateInicio.label(class="form-control-label") }}
+        {{ form.dateInicio(class="dtpick") }}
+        {{ form.dateFin.label(class="form-control-label") }}
+        {{ form.dateFin(class="dtpick") }}
+        <div class="form-group">
+          {{ form.submit(class="btn btn-outline-info") }}
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+
+<div class="container">
+  <div class="row">
+    <div class="col-md-2 col-sm-14">
+      <form method="GET" action="{{url_for('dispositivos.post',post_id=device.id)}}">
+        <input class="btn btn-outline-info" type="submit" value="Reestablecer">
+      </form>
+    </div>
+  </div>
+</div>
+
+
+<!-- Modal -->
+<div class="modal fade" id="deleteModal" tabindex="-1" role="dialog" aria-labelledby="deleteModalLabel"
+  aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="deleteModalLabel">¿Está seguro de desasociar el dispositivo de su cuenta?</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
+        <form action="{{ url_for('dispositivos.delete_post', post_id=device.id) }}" method="POST">
+          <input class="btn btn-danger" type="submit" value="Desasociar">
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+
+
 {% endblock content %}
-

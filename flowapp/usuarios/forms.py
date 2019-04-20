@@ -1,11 +1,11 @@
-import sys
-from flask_wtf import FlaskForm, Form
-from flask_wtf.file import FileField, FileAllowed
-from flask_login import current_user
 from wtforms import StringField, PasswordField, SubmitField, BooleanField, TextAreaField, SelectField, DateField
 from wtforms.validators import DataRequired, Length, Email, EqualTo, ValidationError
 from flowapp.models import User, UserProfile, Categoria
 from datetime import date
+from flask_wtf.file import FileField, FileAllowed
+from flask_login import current_user
+from flask_wtf import FlaskForm
+
 
 class RegistrationForm(FlaskForm):
     username = StringField('Usuario',
@@ -63,16 +63,6 @@ class UpdateAccountForm(FlaskForm):
                     'El email ya se ha tomado. Por favor usar uno diferente.')
 
 
-class PostForm(FlaskForm):
-    title = StringField('Serial Dispositivo', validators=[DataRequired()])
-    content = TextAreaField('Zona', validators=[DataRequired()])
-
-    category = SelectField('Categoria', coerce=int, choices=[(
-        cate.id, cate.title) for cate in Categoria.query.all()])
-
-    submit = SubmitField('Enviar')
-
-
 class RequestResetForm(FlaskForm):
     email = StringField('Email',
                         validators=[DataRequired(), Email()])
@@ -92,9 +82,3 @@ class ResetPasswordForm(FlaskForm):
     confirm_password = PasswordField('Confirma contraseña',
                                      validators=[DataRequired(), EqualTo('password')])
     submit = SubmitField('Resetear Contraseña')
-
-
-class DateForm(FlaskForm):
-    dateInicio = DateField('Fecha Inicio', format="%m/%d/%Y")
-    dateFin = DateField('Fecha Inicio', format="%m/%d/%Y")
-    submit = SubmitField('Buscar')

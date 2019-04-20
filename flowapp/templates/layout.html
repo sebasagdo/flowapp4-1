@@ -27,18 +27,18 @@
           </button>
           <div class="collapse navbar-collapse" id="navbarToggle">
             <div class="navbar-nav mr-auto">
-              <a class="nav-item nav-link" href="{{ url_for('home') }}">Mis dispositivos</a>
-              <a class="nav-item nav-link" href="{{ url_for('about') }}">Acerca del Agua</a>
+              <a class="nav-item nav-link" href="{{ url_for('principal.home') }}">Mis dispositivos</a>
+              <a class="nav-item nav-link" href="{{ url_for('principal.about') }}">Acerca del Agua</a>
             </div>
             <!-- Navbar Right Side -->
             <div class="navbar-nav">
               {% if current_user.is_authenticated %}
-                <a class="nav-item nav-link" href="{{ url_for('new_post') }}">Registrar Dispositivo</a>
-                <a class="nav-item nav-link" href="{{ url_for('account') }}">Mi Cuenta</a>
-                <a class="nav-item nav-link" href="{{ url_for('logout') }}">Salir</a>
+                <a class="nav-item nav-link" href="{{ url_for('dispositivos.new_post') }}">Registrar Dispositivo</a>
+                <a class="nav-item nav-link" href="{{ url_for('usuarios.account') }}">Mi Cuenta</a>
+                <a class="nav-item nav-link" href="{{ url_for('usuarios.logout') }}">Salir</a>
               {% else %}
-                <a class="nav-item nav-link" href="{{ url_for('login') }}">Login</a>
-                <a class="nav-item nav-link" href="{{ url_for('registro') }}">Registro Usuario</a>
+                <a class="nav-item nav-link" href="{{ url_for('usuarios.login') }}">Login</a>
+                <a class="nav-item nav-link" href="{{ url_for('usuarios.registro') }}">Registro Usuario</a>
               {% endif %}
             </div>
           </div>

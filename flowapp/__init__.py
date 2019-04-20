@@ -13,7 +13,7 @@ app.config['SQLALCHEMY_DATABASE_URI'] = 'mysql+mysqlconnector://root:mysql@local
 db = SQLAlchemy(app)
 bcrypt = Bcrypt(app)
 login_manager = LoginManager(app)
-login_manager.login_view = 'login'
+login_manager.login_view = 'usuarios.login'
 login_manager.login_message_category = 'info'
 app.config['MAIL_SERVER'] = 'smtp.googlemail.com'
 app.config['MAIL_PORT'] = 587
@@ -22,4 +22,12 @@ app.config['MAIL_USERNAME'] = 'siscudud@gmail.com'
 app.config['MAIL_PASSWORD'] = 'siscudprueba'
 mail = Mail(app)
 
-from flowapp import routes
+#Registrar los componentes
+from flowapp.usuarios.routes import usuarios
+from flowapp.dispositivos.routes import dispositivos
+from flowapp.principal.routes import principal
+
+
+app.register_blueprint(usuarios)
+app.register_blueprint(dispositivos)
+app.register_blueprint(principal)
