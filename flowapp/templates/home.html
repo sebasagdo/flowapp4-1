@@ -10,7 +10,18 @@
               <small class="text-muted">{{ device.linkDate.strftime('%Y-%m-%d') }}</small>
             </div>
             <h2><a class="article-title" href="{{ url_for('dispositivos.post', post_id=device.id) }}">{{ device.dispUser.serialID }}</a> </h2> 
-            <span class="badge badge-danger">Not Online</span>
+                       
+              {% if device.consumosDispositivo|length %}
+                  {% set ultimoConsumo =  device.consumosDispositivo|map(attribute='date')|list|last %}         
+                  {% if compare(ultimoConsumo) %}
+                        <span class="badge badge-success">En Línea</span>
+                  {% else %}
+                        <span class="badge badge-danger">Not Online</span>
+                  {% endif %}
+              {% else %}
+                    <span class="badge badge-warning">Sin Consumos</span>
+              {% endif %}
+             
             <p class="article-content"><b>Categoria:</b> {{ device.dispCategoria.title }} - <b>Zona:</b> {{ device.zona }} - <b>Limite en CC:</b> {{ device.configLimiteDispositivo.limitDefined }}</p>
             <p class="article-content"><b>Fecha Inicial Monitoreo:</b> {{ device.configLimiteDispositivo.startDateConfig.strftime('%Y-%m-%d') }} </p>
             <p class="article-content"><b>Fecha Final Monitoreo:</b> {{ device.configLimiteDispositivo.endDateConfig.strftime('%Y-%m-%d') }} </p>
