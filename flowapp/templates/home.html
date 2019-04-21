@@ -1,6 +1,7 @@
 {% extends "layout.html" %}
 {% block content %}
     {% for device in devices.items %}
+
         <article class="media content-section">
           <img class="rounded-circle article-img" src="{{ url_for('static', filename='profile_pics/' + device.dispositivo.profile.image_file) }}">
           <div class="media-body">
@@ -8,8 +9,11 @@
               <a class="mr-2" href="{{ url_for('usuarios.user_posts', username=device.dispositivo.username) }}">{{ device.dispositivo.username }}</a>
               <small class="text-muted">{{ device.linkDate.strftime('%Y-%m-%d') }}</small>
             </div>
-            <h2><a class="article-title" href="{{ url_for('dispositivos.post', post_id=device.id) }}">{{ device.dispUser.serialID }}</a></h2>
-            <p class="article-content"><b>Categoria:</b> {{ device.dispCategoria.title }} - <b>Zona:</b> {{ device.zona }}</p>
+            <h2><a class="article-title" href="{{ url_for('dispositivos.post', post_id=device.id) }}">{{ device.dispUser.serialID }}</a> </h2> 
+            <span class="badge badge-danger">Not Online</span>
+            <p class="article-content"><b>Categoria:</b> {{ device.dispCategoria.title }} - <b>Zona:</b> {{ device.zona }} - <b>Limite en CC:</b> {{ device.configLimiteDispositivo.limitDefined }}</p>
+            <p class="article-content"><b>Fecha Inicial Monitoreo:</b> {{ device.configLimiteDispositivo.startDateConfig.strftime('%Y-%m-%d') }} </p>
+            <p class="article-content"><b>Fecha Final Monitoreo:</b> {{ device.configLimiteDispositivo.endDateConfig.strftime('%Y-%m-%d') }} </p>
           </div>
         </article>
     {% endfor %}

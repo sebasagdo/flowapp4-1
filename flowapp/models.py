@@ -109,14 +109,20 @@ class UserDevice(db.Model):
     idDeviceCategoryFK = db.Column('IdDeviceCategory', db.Integer, db.ForeignKey(
         'devicecategory.IdDeviceCategory'))
     zona = db.Column('Zone', db.String(100))
-    consumosDispositivo = db.relationship('DeviceConsumption', backref='userDevice')
+    consumosDispositivo = db.relationship(
+        'DeviceConsumption', backref='userDevice')
+    configLimiteDispositivo = db.relationship(
+        'DeviceConfiguration', backref='userDeviceConfigParent',uselist=False)
+
 
 
 class Unit(db.Model):
     __tablename__ = 'unit'
     id = db.Column('IdUnit', db.Integer, primary_key=True)
     name = db.Column('Name', db.String(45))
-    deviceConsumptionChild = db.relationship('DeviceConsumption', backref='unit')
+    deviceConsumptionChild = db.relationship(
+        'DeviceConsumption', backref='unit')
+
 
 class DeviceConsumption(db.Model):
     __tablename__ = 'deviceconsumption'
@@ -126,7 +132,20 @@ class DeviceConsumption(db.Model):
                      default=datetime.utcnow)
     quantity = db.Column('Quantity', db.Float)
     idUnitFk = db.Column('IdUnit', db.Integer, db.ForeignKey('unit.IdUnit'))
-    idUserDevice = db.Column('IdUserDevice', db.Integer, db.ForeignKey('userdevice.IdUserDevice'))
+    idUserDevice = db.Column('IdUserDevice', db.Integer,
+                             db.ForeignKey('userdevice.IdUserDevice'))
+
+
+class DeviceConfiguration(db.Model):
+    __tablename__ = 'deviceconfiguration'
+
+    id = db.Column('IdDeviceConfiguration', db.Integer, primary_key=True)
+    limitDefined = db.Column('LimitDefined', db.Float)
+    startDateConfig = db.Column('StartDate', db.DateTime, nullable=False)
+    endDateConfig = db.Column('EndDate', db.DateTime, nullable=False)
+    isPeriodic = db.Column('IsPeriodic', db.Integer, default=1)
+    idUserDevice = db.Column('IdUserDevice', db.Integer,
+                             db.ForeignKey('userdevice.IdUserDevice'))
 
 # Objeto DTO que representa el objeto de sesion
 

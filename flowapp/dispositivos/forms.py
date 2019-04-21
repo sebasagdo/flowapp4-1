@@ -7,11 +7,14 @@ from datetime import date
 
 class PostForm(FlaskForm):
     title = StringField('Serial Dispositivo', validators=[DataRequired()])
-    content = TextAreaField('Zona', validators=[DataRequired()])
+    content = StringField('Zona', validators=[DataRequired()])
 
     category = SelectField('Categoria', coerce=int, choices=[(
         cate.id, cate.title) for cate in Categoria.query.all()])
-
+    limiteConsumo = StringField('Limite Consumo', validators=[DataRequired()])
+    dateInicioConsumo = DateField('Fecha Inicio', validators=[
+                           DataRequired()], format="%m/%d/%Y", default=date.today)
+    periocidad = SelectField('Periocidad', coerce=int, choices=[(30, 'Mensual'), (60, 'Bimensual'), (90, 'Trimestral')])
     submit = SubmitField('Enviar')
 
 

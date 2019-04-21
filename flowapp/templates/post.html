@@ -20,7 +20,8 @@
     <h2 class="article-title"> Serial: {{ device.dispUser.serialID }}</h2>
     <p class="article-content"><b>Zona:</b> {{ device.zona }}</p>
     <p class="article-content"><b>Categoria:</b> {{ device.dispCategoria.title }}</p>
-    <p class="article-content"><b>Estadisticas:</b></p>
+    <p class="article-content"><b>Fecha Inicial Monitoreo:</b> {{ device.configLimiteDispositivo.startDateConfig.strftime('%Y-%m-%d') }} </p>
+    <p class="article-content"><b>Fecha Final Monitoreo:</b> {{ device.configLimiteDispositivo.endDateConfig.strftime('%Y-%m-%d') }} </p>
   </div>
 
 </article>
