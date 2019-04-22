@@ -3,7 +3,7 @@
     {% for device in devices.items %}
 
         <article class="media content-section">
-          <img class="rounded-circle article-img" src="{{ url_for('static', filename='profile_pics/' + device.dispositivo.profile.image_file) }}">
+          <img class="rounded-circle article-img" src="{{ url_for('static', filename='profile_pics/' + device.dispositivo.profile.image_file) }}" alt="Foto de Perfil del usuario asociado">
           <div class="media-body">
             <div class="article-metadata">
               <a class="mr-2" href="{{ url_for('usuarios.user_posts', username=device.dispositivo.username) }}">{{ device.dispositivo.username }}</a>
@@ -22,9 +22,9 @@
                     <span class="badge badge-warning">Sin Consumos</span>
               {% endif %}
              
-            <p class="article-content"><b>Categoria:</b> {{ device.dispCategoria.title }} - <b>Zona:</b> {{ device.zona }} - <b>Limite en CC:</b> {{ device.configLimiteDispositivo.limitDefined }}</p>
-            <p class="article-content"><b>Fecha Inicial Monitoreo:</b> {{ device.configLimiteDispositivo.startDateConfig.strftime('%Y-%m-%d') }} </p>
-            <p class="article-content"><b>Fecha Final Monitoreo:</b> {{ device.configLimiteDispositivo.endDateConfig.strftime('%Y-%m-%d') }} </p>
+            <p class="article-content"><strong>Categoria:</strong> {{ device.dispCategoria.title }} - <strong>Zona:</strong> {{ device.zona }} - <strong>Limite en CC:</strong> {{ device.configLimiteDispositivo.limitDefined }}</p>
+            <p class="article-content"><strong>Fecha Inicial Monitoreo:</strong> {{ device.configLimiteDispositivo.startDateConfig.strftime('%Y-%m-%d') }} </p>
+            <p class="article-content"><strong>Fecha Final Monitoreo:</strong> {{ device.configLimiteDispositivo.endDateConfig.strftime('%Y-%m-%d') }} </p>
           </div>
         </article>
     {% endfor %}

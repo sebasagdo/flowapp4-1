@@ -146,12 +146,3 @@ class DeviceConfiguration(db.Model):
     isPeriodic = db.Column('IsPeriodic', db.Integer, default=1)
     idUserDevice = db.Column('IdUserDevice', db.Integer,
                              db.ForeignKey('userdevice.IdUserDevice'))
-
-# Objeto DTO que representa el objeto de sesion
-
-
-class UserSession(UserMixin):
-    def __init__(self, id, username, email):
-        self.id = id
-        self.username = 'asus'
-        self.email = email

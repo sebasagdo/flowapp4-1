@@ -2,7 +2,7 @@
 {% block content %}
 <article class="media content-section">
   <img class="rounded-circle article-img"
-    src="{{ url_for('static', filename='profile_pics/' + device.dispositivo.profile.image_file) }}">
+    src="{{ url_for('static', filename='profile_pics/' + device.dispositivo.profile.image_file) }}" alt="Foto de Perfil del usuario asociado">
   <div class="media-body">
     <div class="article-metadata">
       <a class="mr-2"
@@ -18,10 +18,10 @@
       {% endif %}
     </div>
     <h2 class="article-title"> Serial: {{ device.dispUser.serialID }}</h2>
-    <p class="article-content"><b>Zona:</b> {{ device.zona }}</p>
-    <p class="article-content"><b>Categoria:</b> {{ device.dispCategoria.title }}</p>
-    <p class="article-content"><b>Fecha Inicial Monitoreo:</b> {{ device.configLimiteDispositivo.startDateConfig.strftime('%Y-%m-%d') }} </p>
-    <p class="article-content"><b>Fecha Final Monitoreo:</b> {{ device.configLimiteDispositivo.endDateConfig.strftime('%Y-%m-%d') }} </p>
+    <p class="article-content"><strong>Zona:</strong> {{ device.zona }}</p>
+    <p class="article-content"><strong>Categoria:</strong> {{ device.dispCategoria.title }}</p>
+    <p class="article-content"><strong>Fecha Inicial Monitoreo:</strong> {{ device.configLimiteDispositivo.startDateConfig.strftime('%Y-%m-%d') }} </p>
+    <p class="article-content"><strong>Fecha Final Monitoreo:</strong> {{ device.configLimiteDispositivo.endDateConfig.strftime('%Y-%m-%d') }} </p>
   </div>
 
 </article>

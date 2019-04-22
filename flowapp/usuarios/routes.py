@@ -2,7 +2,7 @@ from flask import Blueprint, render_template, url_for, flash, redirect, request,
 from flask_login import login_user, current_user, logout_user, login_required
 from flowapp.usuarios.forms import (RegistrationForm, User, UserProfile, LoginForm, UpdateAccountForm, RequestResetForm, ResetPasswordForm)
 from flowapp import db, bcrypt, mail
-from flowapp.models import User, UserSession, UserDevice
+from flowapp.models import User, UserDevice
 from flowapp.usuarios.utilitarios import send_reset_email, save_picture
 
 usuarios = Blueprint('usuarios', __name__)
@@ -21,9 +21,9 @@ def registro():
         db.session.add(user)
         db.session.commit()
 
-        userProfile = UserProfile(
+        user_profile = UserProfile(
             usuario=user, firstName=user.username, lastName=user.username, email=form.email.data, phone='32145')
-        db.session.add(userProfile)
+        db.session.add(user_profile)
         db.session.commit()
 
         flash('Tu cuenta se ha creado exitosamente. Inicia sesión ahora!', 'success')
@@ -38,16 +38,11 @@ def login():
     form = LoginForm()
     if form.validate_on_submit():
         # Primero Buscar el Email
-        userProfile = UserProfile.query.filter_by(
+        user_profile = UserProfile.query.filter_by(
             email=form.email.data).first()
         # Buscar el usuario Asociado a dicho Email
-        user = User.query.filter_by(id=userProfile.id).first()
-
-        usuarioSesion = UserSession(
-            userProfile.id, user.username, userProfile.email)
-        print(usuarioSesion.__dict__)
-
-        if userProfile and bcrypt.check_password_hash(user.password, form.password.data):
+        user = User.query.filter_by(id=user_profile.id).first()
+        if user_profile and bcrypt.check_password_hash(user.password, form.password.data):
             # Pasar el usuario de sesion
             login_user(user, remember=form.remember.data)
             next_page = request.args.get('next')
@@ -62,23 +57,23 @@ def login():
 def account():
     form = UpdateAccountForm()
     # Primero Buscar el Email
-    userProfile = UserProfile.query.filter_by(
+    user_profile = UserProfile.query.filter_by(
         id=current_user.id).first()
 
     if form.validate_on_submit():
         if form.picture.data:
             picture_file = save_picture(form.picture.data)
-            userProfile.image_file = picture_file
+            user_profile.image_file = picture_file
         current_user.username = form.username.data
-        userProfile.email = form.email.data
+        user_profile.email = form.email.data
         db.session.commit()
         flash('Tu cuenta se ha actualizado exitosamente!', 'success')
         return redirect(url_for('usuarios.account'))
     elif request.method == 'GET':
         form.username.data = current_user.username
-        form.email.data = userProfile.email
+        form.email.data = user_profile.email
     image_file = url_for(
-        'static', filename='profile_pics/' + userProfile.image_file)
+        'static', filename='profile_pics/' + user_profile.image_file)
     return render_template('account.html', title='Cuenta',
                            image_file=image_file, form=form)
 
@@ -105,10 +100,10 @@ def reset_request():
     form = RequestResetForm()
     if form.validate_on_submit():
          # Primero Buscar el Email
-        userProfile = UserProfile.query.filter_by(
+        user_profile = UserProfile.query.filter_by(
             email=form.email.data).first()
         # Buscar el usuario Asociado a dicho Email
-        user = User.query.filter_by(id=userProfile.id).first()
+        user = User.query.filter_by(id=user_profile.id).first()
         send_reset_email(user)
         flash('Se ha enviado a su correo electronico las instrucciones de resetar password.', 'info')
         return redirect(url_for('usuarios.login'))

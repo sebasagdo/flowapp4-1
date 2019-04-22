@@ -23,9 +23,8 @@ class RegistrationForm(FlaskForm):
             raise ValidationError('Ese usuario ya existe!. Cambie de usuario')
 
     def validate_email(self, email):
-        profileUser = UserProfile.query.filter_by(email=email.data).first()
-        #user = User.query.filter_by(email=email.data).first()
-        if profileUser:
+        profile_user = UserProfile.query.filter_by(email=email.data).first()
+        if profile_user:
             raise ValidationError(
                 'El email ya se ha tomado. Por favor usar uno diferente.')
 
@@ -71,8 +70,8 @@ class RequestResetForm(FlaskForm):
     def validate_email(self, email):
 
         #
-        userProfile = UserProfile.query.filter_by(email=email.data).first()
-        if userProfile is None:
+        user_profile = UserProfile.query.filter_by(email=email.data).first()
+        if user_profile is None:
             raise ValidationError(
                 'No hay ninguna cuenta asociada con ese email!.')
 
