@@ -28,8 +28,8 @@ def new_post():
         db.session.add(device_user)
         db.session.commit()
         #Insercion de la informacion de la configuracion del Dispositivo
-        userdeviceLimit = DeviceConfiguration(limitDefined=form.limiteConsumo.data, startDateConfig=form.dateInicioConsumo.data, endDateConfig=form.dateInicioConsumo.data + timedelta(days=form.periocidad.data), userDeviceConfigParent=device_user)
-        db.session.add(userdeviceLimit)
+        user_device_limit = DeviceConfiguration(limitDefined=form.limiteConsumo.data, startDateConfig=form.dateInicioConsumo.data, endDateConfig=form.dateInicioConsumo.data + timedelta(days=form.periocidad.data), userDeviceConfigParent=device_user)
+        db.session.add(user_device_limit)
         db.session.commit()
         flash('Su dispositivo se ha registrado!', 'success')
         return redirect(url_for('principal.home'))
@@ -65,7 +65,7 @@ def update_post(post_id):
     #Se busca El dispositivo_User
     device = UserDevice.query.get_or_404(post_id)
     # Se busca la configuracion del Dispositivo
-    deviceConfig = DeviceConfiguration.query.filter_by(userDeviceConfigParent=device).first()
+    device_config = DeviceConfiguration.query.filter_by(userDeviceConfigParent=device).first()
     if device.dispositivo != current_user:
         abort(403)
     form = PostForm()
@@ -73,9 +73,9 @@ def update_post(post_id):
         device.zona = form.content.data  # Se actualiza la zona
         device.dispUser.serialID = form.title.data  # Se actualiza el SerialID
         device.idDeviceCategoryFK = form.category.data  # Se actualiza la categoria
-        deviceConfig.limitDefined = form.limiteConsumo.data 
-        deviceConfig.startDateConfig=form.dateInicioConsumo.data
-        deviceConfig.endDateConfig=form.dateInicioConsumo.data + timedelta(days=form.periocidad.data)
+        device_config.limitDefined = form.limiteConsumo.data 
+        device_config.startDateConfig=form.dateInicioConsumo.data
+        device_config.endDateConfig=form.dateInicioConsumo.data + timedelta(days=form.periocidad.data)
         db.session.commit()
         flash('Se ha actualizado la información de tu dispositivo!', 'success')
         return redirect(url_for('dispositivos.post', post_id=device.id))
@@ -84,7 +84,7 @@ def update_post(post_id):
         form.title.data = device.dispUser.serialID
         form.content.data = device.zona
         form.category.data = device.idDeviceCategoryFK 
-        form.limiteConsumo.data =  deviceConfig.limitDefined
+        form.limiteConsumo.data =  device_config.limitDefined
     return render_template('create_post.html', title='Actualizar Dispositivo',
                            form=form, legend='Actualizar Dispositivo')
 
@@ -94,10 +94,10 @@ def update_post(post_id):
 def delete_post(post_id):
     user_device = UserDevice.query.get_or_404(post_id)
     # Se busca la configuracion del Dispositivo asociado
-    deviceConfig = DeviceConfiguration.query.filter_by(userDeviceConfigParent=user_device).first()
+    device_config = DeviceConfiguration.query.filter_by(userDeviceConfigParent=user_device).first()
     if user_device.dispositivo != current_user:
         abort(403)
-    db.session.delete(deviceConfig)
+    db.session.delete(device_config)
     db.session.delete(user_device)
     db.session.delete(user_device.dispUser)
     db.session.commit()

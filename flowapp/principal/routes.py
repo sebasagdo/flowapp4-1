@@ -24,7 +24,7 @@ def about():
     return render_template('about.html', title='Acerca de')
 
 
-def compare(dateUltimoConsumo):
-    if (datetime.now()<dateUltimoConsumo + timedelta(minutes=5)):
+def compare(date_ultimo_consumo):
+    if (datetime.now()<date_ultimo_consumo + timedelta(minutes=5)):
         return True
     return False

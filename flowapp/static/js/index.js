@@ -21,8 +21,8 @@ var paper = new Raphael(document.getElementById('canvas_container'), 600, 525);
     text: 'rgba(16,16,55,.7)',
     value: 'rgba(16,16,0,.8)'
   }
-  for(var i=0; i<50; i++) {
-    var xx = x+(i*scale);
+  for(var j=0; j<50; j++) {
+    var xx = x+(j*scale);
     var line = paper.path('M '+xx+',15 L '+xx+','+(height*devices*1.115));
     line.attr({'stroke':style.bg});
   }

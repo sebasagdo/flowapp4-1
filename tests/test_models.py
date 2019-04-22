@@ -27,5 +27,7 @@ class TestAdd(unittest.TestCase):
         self.assertEqual(new_user.rol, '111')
 
 
+
+
 if __name__ == '__main__':
     unittest.main()
