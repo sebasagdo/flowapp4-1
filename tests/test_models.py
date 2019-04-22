@@ -4,20 +4,14 @@ import sys
 parent_dir = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 sys.path.append(parent_dir)
 from flowapp import db, bcrypt, mail
-from flowapp.models import User
+from flowapp.models import User, Device, Categoria,Unit
 
 
-class TestAdd(unittest.TestCase):
-    """
-    Test the add function from the mymath library
-    """
+class UserAdd(unittest.TestCase):
+
 
     def test_new_user(self):
-        """
-        GIVEN a User model
-        WHEN a new User is created
-        THEN check the email, hashed_password, authenticated, and role fields are defined correctly
-        """
+
 
         new_user = User(username='leonardo', password=bcrypt.generate_password_hash(
             'flowapp').decode('utf-8'), active='S', rol='111')
@@ -26,8 +20,29 @@ class TestAdd(unittest.TestCase):
         self.assertEqual(new_user.active, 'S')
         self.assertEqual(new_user.rol, '111')
 
+class DeviceAdd(unittest.TestCase):
 
+    def test_new_device(self):
 
+        new_device = Device(id=1,serialID='2121')
+        self.assertEqual(new_device.id, 1)
+        self.assertEqual(new_device.serialID, '2121')
+
+class CategoryAdd(unittest.TestCase):
+
+    def test_new_category(self):
+
+        new_category = Categoria(id=1,title='Cocina')
+        self.assertEqual(new_category.id, 1)
+        self.assertEqual(new_category.title, 'Cocina')
+
+class UnitAdd(unittest.TestCase):
+
+    def test_new_unit(self):
+
+        new_unit = Unit(id=1,name='Centimetros Cubicos')
+        self.assertEqual(new_unit.id, 1)
+        self.assertEqual(new_unit.name, 'Centimetros Cubicos')
 
 if __name__ == '__main__':
     unittest.main()
