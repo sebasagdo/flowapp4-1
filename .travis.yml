@@ -2,6 +2,10 @@ language: python
 python:
   - "3.6"
   - "3.6-dev"  # 3.6 development branch
+  
+language: node_js
+node_js:
+  - "7"
 # command to install dependencies
 install:
   - pip install -r requirements.txt
